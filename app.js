@@ -4,6 +4,7 @@ const timeList = document.querySelector('#time-list')
 const timeEl = document.querySelector('#time')
 const board = document.querySelector('#board')
 let time = 0
+let score = 0
 
 startBtn.addEventListener('click', (event) => {
     event.preventDefault()
@@ -15,6 +16,14 @@ timeList.addEventListener('click', (event) => {
         time = parseInt(event.target.getAttribute('data-time'))
         screens[1].classList.add('up')
         startGame()
+    }
+})
+
+board.addEventListener('click', (event) => {
+    if (event.target.classList.contains('circle')) {
+        score++
+        event.target.remove()
+        createRandomeCircle()
     }
 })
 
@@ -38,14 +47,21 @@ function decrreaseTime() {
 }
 
 function finishGame() {
+    timeEl.parentNode.classList.add('hide')
+    board.innerHTML = `<h1>Счёт: <span class="primary">${score}</span></h1>`
 
 }
 
 function createRandomeCircle() {
     const circle = document.createElement('div')
     const size = getRandomNumber(10, 60)
-    const x = 150
-    const y = 500
+    const {
+        width,
+        height
+    } = board.getBoundingClientRect()
+
+    const x = getRandomNumber(0, width - size)
+    const y = getRandomNumber(0, height - size)
 
     circle.classList.add('circle')
     circle.style.width = `${size}px`
